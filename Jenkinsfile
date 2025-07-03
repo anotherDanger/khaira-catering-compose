@@ -38,6 +38,7 @@ pipeline {
                 sh '''
                     docker rm -f jwt-auth || true
                     docker rm -f elasticsearch || true
+                    docker rm -f admin-data || true
                     docker compose down --remove-orphans --volumes
                 '''
             }
