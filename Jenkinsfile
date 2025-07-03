@@ -35,7 +35,10 @@ pipeline {
         }
         stage('Clean docker') {
             steps {
-                sh 'docker compose down'
+                sh '''
+                    docker rm -f jwt-auth || true
+                    docker compose down --remove-orphans --volumes
+                '''
             }
         }
         stage('Start Services') {
