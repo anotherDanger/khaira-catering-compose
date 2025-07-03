@@ -19,18 +19,16 @@ pipeline {
                     string(credentialsId: 'GHCR_TOKEN', variable: 'GHCR_TOKEN')
                 ]) {
                     script {
-                        sh '''
-                            echo $GHCR_TOKEN | docker login ghcr.io -u anotherDanger --password-stdin
-                        '''
+                        sh 'echo $GHCR_TOKEN | docker login ghcr.io -u anotherDanger --password-stdin'
                         writeFile file: '.env', text: """\
-                            DB_USER=${DB_USER}
-                            DB_PASS=${DB_PASS}
-                            DB_PORT=${DB_PORT}
-                            DB_HOST=${DB_HOST}
-                            DB_NAME=${DB_NAME}
-                            ELASTICHOST=${ELASTICHOST}
-                            JWT_SECRET=${JWT_SECRET}
-                            """
+                        DB_USER=${DB_USER}
+                        DB_PASS=${DB_PASS}
+                        DB_PORT=${DB_PORT}
+                        DB_HOST=${DB_HOST}
+                        DB_NAME=${DB_NAME}
+                        ELASTICHOST=${ELASTICHOST}
+                        JWT_SECRET=${JWT_SECRET}
+                        """
                     }
                 }
             }
@@ -38,7 +36,7 @@ pipeline {
         stage('Clean docker') {
             steps {
                 sh '''
-                    docker compose ps -q | xargs -r docker rm -f
+                    docker rm -f fiber-app khaira-user jwt-auth admin-data elasticsearch || true
                     docker compose down --remove-orphans --volumes
                 '''
             }
