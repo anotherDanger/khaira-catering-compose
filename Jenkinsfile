@@ -35,10 +35,7 @@ pipeline {
         }
         stage('Clean docker') {
             steps {
-                sh '''
-                    docker rm -f fiber-app khaira-user jwt-auth admin-data elasticsearch || true
-                    docker compose down --remove-orphans --volumes
-                '''
+                sh 'docker compose down'
             }
         }
         stage('Start Services') {
