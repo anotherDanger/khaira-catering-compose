@@ -1,14 +1,13 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout'){
-            steps{
+        stage('Checkout') {
+            steps {
                 checkout scm
             }
         }
-        
-        stage('Use Credentials'){
-            steps{
+        stage('Use Credentials') {
+            steps {
                 withCredentials([
                     string(credentialsId: 'DB_USER', variable: 'DB_USER'),
                     string(credentialsId: 'DB_PASS', variable: 'DB_PASS'),
@@ -21,7 +20,6 @@ pipeline {
                 ]) {
                     script {
                         sh 'echo $GHCR_TOKEN | docker login ghcr.io -u anotherDanger --password-stdin'
-                        
                         writeFile file: '.env', text: """
                         DB_USER=${DB_USER}
                         DB_PASS=${DB_PASS}
@@ -35,16 +33,15 @@ pipeline {
                 }
             }
         }
-        stage('Clean docker'){
-            steps{
+        stage('Clean docker') {
+            steps {
                 sh 'docker compose down'
             }
         }
-        stage('Start Services'){
+        stage('Start Services') {
             steps {
                 sh 'docker compose up -d'
             }
         }
-
     }
 }
