@@ -36,10 +36,8 @@ pipeline {
         stage('Clean docker') {
             steps {
                 sh '''
-                    docker rm -f jwt-auth || true
-                    docker rm -f elasticsearch || true
-                    docker rm -f admin-data || true
-                    docker compose down --remove-orphans --volumes
+                docker compose ps -q | xargs -r docker rm -f
+                docker compose down --remove-orphans --volumes
                 '''
             }
         }
