@@ -19,3 +19,10 @@ jobs:
 
       - name: Start containers
         run: docker compose up -d
+      
+      - name: Trigger Jenkins build
+        run: |
+          curl -X POST "${{ secrets.JENKINS_URL }}/job/khaira-catering-app/build?token=${{ secrets.JENKINS_SECRET }}"
+
+
+
