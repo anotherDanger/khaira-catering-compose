@@ -43,5 +43,10 @@ pipeline {
                 sh 'docker compose up -d'
             }
         }
+        stage('Trigger nginx-reverse') {
+            steps {
+                build job: 'nginx-reverse'
+            }
+        }
     }
 }
